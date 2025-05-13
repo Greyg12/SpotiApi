@@ -93,7 +93,7 @@ cd SpotiApi
 
    🎉 Proces zakończony pomyślnie!
 
-![Success](images/ua.png)
+   ![Success](images/ua.png)
 
 
 ## Działanie aplikacji:
