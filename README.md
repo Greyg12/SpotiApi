@@ -63,6 +63,7 @@ SPOTIPY_REDIRECT_URI=twoje_redirect_uri
    playlist_id = '4fsu0ZRfn3EJ4ezICrYAcV'
 
    Zaznaczoną część linku, należy użyć w zmiennej playlist_id
+   ```
    ![Link](images/link.png)
  
 2. **Uruchom skrypt**
