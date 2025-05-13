@@ -18,10 +18,6 @@ CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
 REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI')
 SCOPE = 'playlist-read-private playlist-modify-private user-library-read'
 
-print("CLIENT_ID:", CLIENT_ID)
-print("CLIENT_SECRET:", CLIENT_SECRET)
-print("REDIRECT_URI:", REDIRECT_URI)
-
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
