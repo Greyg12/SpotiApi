@@ -1,0 +1,33 @@
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# 🔒 Pliki z danymi poufnymi
+.env
+.cache
+*.cache
+
+# 📦 Środowiska wirtualne
+venv/
+env/
+.venv/
+.env/
+
+# 📂 Pliki tymczasowe i edytorów
+*.log
+*.tmp
+*.swp
+*.swo
+*.DS_Store
+
+# 🛠️ VSCode
+.vscode/
+
+# 🧪 Testy i buildy
+.coverage
+*.egg-info/
+dist/
+build/
