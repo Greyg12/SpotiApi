@@ -19,9 +19,10 @@ Aplikacja:
 Aby uruchomić aplikację, musisz spełnić kilka wymagań:
 
 1. Sklonuj to repozytorium:
-
-git clone https://github.com/twoj-uzytkownik/nazwa-repo.git
-cd nazwa-repo
+```bash
+git clone https://github.com/Greyg12/SpotiApi.git
+cd SpotiApi
+```
 2. Zaintaluj Python w wersji 3.6 lub wyższej (jeśli jeszcze go nie masz).
 3. Zaintaluj biblioteki:
     - `spotipy`
