@@ -36,23 +36,25 @@ cd SpotiApi
    pip install spotipy pandas numpy python-dotenv
    ```
 4. 🔧 Zarejestruj aplikację na https://developer.spotify.com/dashboard
-Kliknij "Create an App"
+   Kliknij "Create an App"
 
-Ustaw:
+   Ustaw:
 
-Nazwa (dowolna)
+   Nazwa (dowolna)
 
-Opis (np. “Dekadowy analizator playlisty”)
+   Opis (np. “Dekadowy analizator playlisty”)
 
-Dodaj redirect_uri, np.:
+   Dodaj redirect_uri, np.:
 
-http://localhost:8888/callback
-(To musi być dokładnie taki sam URI jak w .env i kodzie.)
+   http://localhost:8888/callback
+   (To musi być dokładnie taki sam URI jak w .env i kodzie.)
+
 5. Utwórz plik .env w katalogu głównym projektu i uzupełnij go danymi ze Spotify:
-Aby aplikacja mogła połączyć się z API Spotify, musisz utworzyć plik .env w katalogu głównym aplikacji. Plik powinien zawierać następujące zmienne:
-SPOTIPY_CLIENT_ID=twoje_client_id
-SPOTIPY_CLIENT_SECRET=twoje_client_secret
-SPOTIPY_REDIRECT_URI=twoje_redirect_uri
+   Aby aplikacja mogła połączyć się z API Spotify, musisz utworzyć plik .env w katalogu głównym aplikacji. 
+   Plik powinien zawierać następujące zmienne:
+   SPOTIPY_CLIENT_ID=twoje_client_id
+   SPOTIPY_CLIENT_SECRET=twoje_client_secret
+   SPOTIPY_REDIRECT_URI=twoje_redirect_uri
 
 ## Uruchomienie
 
@@ -72,45 +74,45 @@ SPOTIPY_REDIRECT_URI=twoje_redirect_uri
    main.py
 3. **Zaloguj się do Spotify:**
 
-Przy pierwszym uruchomieniu przeglądarka otworzy się z prośbą o zalogowanie i autoryzację aplikacji.
+   Przy pierwszym uruchomieniu przeglądarka otworzy się z prośbą o zalogowanie i autoryzację aplikacji.
 4. **Poczekaj na zakończenie:**
 
-Przy większych playlistach, wykonanie skryptu może potrwać kilka minut.
+   Przy większych playlistach, wykonanie skryptu może potrwać kilka minut.
 
-Skrypt pobierze dane, pogrupuje je według dekad i utworzy nowe playlisty w Twoim profilu Spotify. Każda z nich będzie mieć nazwę w formacie:
+   Skrypt pobierze dane, pogrupuje je według dekad i utworzy nowe playlisty w Twoim profilu Spotify. Każda z nich będzie mieć nazwę w formacie:
 
-Nazwa oryginalnej playlisty - 1990s
-Nazwa oryginalnej playlisty - 2000s
-itd.
-Na końcu zobaczysz komunikat:
+   Nazwa oryginalnej playlisty - 1990s
+   Nazwa oryginalnej playlisty - 2000s
+   itd.
+   Na końcu zobaczysz komunikat:
 
-🎉 Proces zakończony pomyślnie!
+   🎉 Proces zakończony pomyślnie!
 
 ![Success](images/ua.png)
 
 
 ## Działanie aplikacji:
 
-Pobieranie playlisty – Aplikacja pobiera playlistę na podstawie podanego playlist_id.
+   Pobieranie playlisty – Aplikacja pobiera playlistę na podstawie podanego playlist_id.
 
-Grupowanie utworów – Utwory w playliście są grupowane według dekad. Jeśli rok utworu nie jest dostępny, zostanie przypisany do grupy "Nieznana dekada".
+   Grupowanie utworów – Utwory w playliście są grupowane według dekad. Jeśli rok utworu nie jest dostępny, zostanie przypisany do grupy "Nieznana dekada".
 
-Tworzenie playlist – Na podstawie grup dekad tworzone są nowe playlisty, które zawierają odpowiednie utwory.
+   Tworzenie playlist – Na podstawie grup dekad tworzone są nowe playlisty, które zawierają odpowiednie utwory.
 
 ## Przykład
 
-Jeśli masz playlistę, która zawiera utwory z różnych lat, aplikacja automatycznie pogrupuje je w następujący sposób:
+   Jeśli masz playlistę, która zawiera utwory z różnych lat, aplikacja automatycznie pogrupuje je w następujący sposób:
 
-ua - 1960s
+   ua - 1960s
 
-ua - 1970s
+   ua - 1970s
 
-ua - 1980s
+   ua - 1980s
 
-itd.
+   itd.
 
-ua - Nieznana dekada (dla utworów bez roku wydania)
+   ua - Nieznana dekada (dla utworów bez roku wydania)
 
-Każda z tych playlist będzie zawierała odpowiednie utwory, pogrupowane według dekad.
+   Każda z tych playlist będzie zawierała odpowiednie utwory, pogrupowane według dekad.
 
 ![Result](images/result.png)
