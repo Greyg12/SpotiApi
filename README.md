@@ -49,12 +49,17 @@ cd SpotiApi
    http://localhost:8888/callback
    (To musi być dokładnie taki sam URI jak w .env i kodzie.)
 
-5. Utwórz plik .env w katalogu głównym projektu i uzupełnij go danymi ze Spotify:
-   Aby aplikacja mogła połączyć się z API Spotify, musisz utworzyć plik .env w katalogu głównym aplikacji. 
+5. Utwórz plik `.env` w katalogu głównym projektu i uzupełnij go danymi ze Spotify:
+
+   Aby aplikacja mogła połączyć się z API Spotify, musisz utworzyć plik `.env` w katalogu głównym aplikacji.  
    Plik powinien zawierać następujące zmienne:
+
+   ```env
    SPOTIPY_CLIENT_ID=twoje_client_id
    SPOTIPY_CLIENT_SECRET=twoje_client_secret
    SPOTIPY_REDIRECT_URI=twoje_redirect_uri
+   ```
+
 
 ## Uruchomienie
 
