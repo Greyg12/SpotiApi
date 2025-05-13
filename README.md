@@ -33,6 +33,7 @@ cd nazwa-repo
 
    ```bash
    pip install spotipy pandas numpy python-dotenv
+   ```
 4. 🔧 Zarejestruj aplikację na https://developer.spotify.com/dashboard
 Kliknij "Create an App"
 
