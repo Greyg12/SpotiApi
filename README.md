@@ -1,4 +1,4 @@
-# Spotify Playlist Grouping by Decade
+# Grupowanie playlist dekadami na Spotify
 
 Aplikacja umożliwiająca pobranie playlisty Spotify, zebranie informacji o utworach (w tym roku wydania) oraz utworzenie nowych playlist, pogrupowanych według dekad.
 
@@ -61,9 +61,9 @@ SPOTIPY_REDIRECT_URI=twoje_redirect_uri
 
    ```python
    playlist_id = '4fsu0ZRfn3EJ4ezICrYAcV'
+   ```
 
    Zaznaczoną część linku, należy użyć w zmiennej playlist_id
-   ```
    ![Link](images/link.png)
  
 2. **Uruchom skrypt**
