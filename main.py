@@ -1,4 +1,4 @@
-# Importujemy niezbędne biblioteki
+# Import necessary libraries
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import pandas as pd
@@ -8,11 +8,10 @@ import os
 from dotenv import load_dotenv
 from spotipy.exceptions import SpotifyException
 
-# Wczytanie zmiennych środowiskowych z pliku .env (upewnij się, że masz ten plik!)
+# Load environment variables from the .env file (make sure you have this file!)
 load_dotenv()
 
-
-# Konfiguracja API Spotify (klucze pobrane z .env)
+# Spotify API configuration (keys loaded from .env)
 CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
 CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
 REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI')
@@ -25,7 +24,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     scope=SCOPE
 ))
 
-# Funkcja z automatycznym retry na 429 (Too Many Requests)
+# Function with automatic retry for 429 (Too Many Requests)
 def get_album_with_retry(sp, album_id, retries=5):
     for attempt in range(retries):
         try:
@@ -33,26 +32,26 @@ def get_album_with_retry(sp, album_id, retries=5):
         except SpotifyException as e:
             if e.http_status == 429:
                 retry_after = int(e.headers.get("Retry-After", 5))
-                print(f"⚠️ Limit API! Czekam {retry_after} sekund...")
+                print(f"⚠️ API limit reached! Waiting {retry_after} seconds...")
                 time.sleep(retry_after + 1)
             else:
-                print(f"Błąd przy pobieraniu albumu: {e}")
+                print(f"Error fetching album: {e}")
                 break
         except Exception as e:
-            print(f"Inny błąd przy albumie: {e}")
+            print(f"Other error with album: {e}")
             break
     return None
 
-# Pobieranie danych playlisty
+# Fetch playlist data
 playlist_id = '4fsu0ZRfn3EJ4ezICrYAcV' #YOUR PLAYLIST ID
 try:
     playlist = sp.playlist(playlist_id)
     main_playlist_name = playlist['name']
 except Exception as e:
-    print(f"Błąd: {e}")
+    print(f"Error: {e}")
     exit()
 
-# Zbieranie informacji o utworach
+# Collecting track information
 all_tracks = []
 tracks = playlist['tracks']
 
@@ -63,40 +62,40 @@ while tracks:
             if not track or not track.get('id'):
                 continue
 
-            # Pobieranie roku wydania z zabezpieczeniami i retry
+            # Fetch release year with safeguards and retry
             release_year = None
             try:
                 if track.get('album') and track['album'].get('id'):
                     album = get_album_with_retry(sp, track['album']['id'])  # ✅ retry
-                    time.sleep(0.2)  # ⏱️ opóźnienie zapobiegające limitom
+                    time.sleep(0.2)  # ⏱️ delay to prevent rate limits
                     if album:
                         release_date = album.get('release_date', '')
                         if release_date:
                             release_year = int(release_date.split('-')[0])
             except Exception as e:
-                print(f"Błąd przy albumie: {e}")
+                print(f"Error with album: {e}")
 
-            # Dodawanie do listy
+            # Add to list
             all_tracks.append({
                 'track_id': track['id'],
-                'track_name': track.get('name', 'Nieznany tytuł'),
+                'track_name': track.get('name', 'Unknown title'),
                 'release_year': release_year
             })
 
         except Exception as e:
-            print(f"Błąd przetwarzania utworu: {e}")
+            print(f"Error processing track: {e}")
             continue
 
     if tracks.get('next'):
-        time.sleep(0.5)  # ⏱️ opóźnienie między stronami playlisty
+        time.sleep(0.5)  # ⏱️ delay between playlist pages
         tracks = sp.next(tracks)
     else:
         tracks = None
 
-# Tworzenie DataFrame z dodatkowymi zabezpieczeniami
+# Create DataFrame with additional safeguards
 df = pd.DataFrame(all_tracks)
 
-# Czyszczenie i konwersja roku wydania
+# Clean and convert release year
 df['release_year'] = (
     pd.to_numeric(df['release_year'], errors='coerce')
     .fillna(-1)
@@ -104,41 +103,41 @@ df['release_year'] = (
     .replace(-1, pd.NA)
 )
 
-# Funkcja do przypisywania dekady
+# Function to assign decade
 def assign_decade(year):
     try:
         year_int = int(round(float(year)))
         if 1900 < year_int < 2100:
             return f"{(year_int // 10) * 10}s"
-        return 'Nieznana dekada'
+        return 'Unknown decade'
     except (ValueError, TypeError):
-        return 'Nieznana dekada'
+        return 'Unknown decade'
 
-# Dodanie kolumny 'decade'
+# Add 'decade' column
 df['decade'] = df['release_year'].apply(assign_decade)
 
-# Grupowanie według dekad
+# Group by decades
 user_id = sp.me()['id']
 decade_groups = df.groupby('decade', observed=True)
 
-# Obsługa "Nieznana dekada"
-if 'Nieznana dekada' in decade_groups.groups:
-    unknown_group = decade_groups.get_group('Nieznana dekada')
+# Handle "Unknown decade"
+if 'Unknown decade' in decade_groups.groups:
+    unknown_group = decade_groups.get_group('Unknown decade')
     if not unknown_group.empty:
         unknown_playlist = sp.user_playlist_create(
             user=user_id,
-            name=f"{main_playlist_name} - Nieznana dekada",
+            name=f"{main_playlist_name} - Unknown decade",
             public=False
         )
         track_ids = unknown_group['track_id'].tolist()
         for i in range(0, len(track_ids), 100):
             sp.playlist_add_items(unknown_playlist['id'], track_ids[i:i + 100])
             time.sleep(1)
-        print(f"✅ Utworzono playlistę: {main_playlist_name} - Nieznana dekada ({len(track_ids)} utworów)")
+        print(f"✅ Created playlist: {main_playlist_name} - Unknown decade ({len(track_ids)} tracks)")
 
-# Tworzenie playlist dla znanych dekad
+# Create playlists for known decades
 for decade, group in decade_groups:
-    if decade == 'Nieznana dekada':
+    if decade == 'Unknown decade':
         continue
 
     if not group.empty:
@@ -156,9 +155,9 @@ for decade, group in decade_groups:
             for i in range(0, len(track_ids), 100):
                 sp.playlist_add_items(new_playlist['id'], track_ids[i:i + 100])
                 time.sleep(1)
-            print(f"✅ Utworzono playlistę: {playlist_name} ({len(track_ids)} utworów)")
+            print(f"✅ Created playlist: {playlist_name} ({len(track_ids)} tracks)")
 
         except Exception as e:
-            print(f"❌ Błąd przy tworzeniu playlisty {playlist_name}: {e}")
+            print(f"❌ Error creating playlist {playlist_name}: {e}")
 
-print("🎉 Proces zakończony pomyślnie!")
+print("🎉 Process completed successfully!")

@@ -1,123 +1,124 @@
-# Grupowanie playlist dekadami na Spotify
+# Grouping Playlists by Decades on Spotify
 
-Aplikacja umożliwiająca pobranie playlisty Spotify, zebranie informacji o utworach (w tym roku wydania) oraz utworzenie nowych playlist, pogrupowanych według dekad.
+An application that allows you to download a Spotify playlist, gather information about tracks (including release year), and create new playlists grouped by decades.
 
-## Opis
+## Description
 
-### Uwaga, aby skrypt zadziałał, należy być twórcą lub współtwórcą playlisty!
+### Note: To make the script work, you must be the creator or co-creator of the playlist!
 
-Aplikacja:
+The application:
 
-- Pobiera dane z playlisty Spotify, w tym informacje o utworach.
-- Dla każdego utworu próbuje pobrać rok wydania na podstawie albumu.
-- Grupy utworów są tworzone na podstawie dekad (np. 1960s, 1970s, itd.).
-- Tworzy nowe playlisty dla każdej dekady, a utwory są przypisywane do odpowiednich playlist.
-- Tworzy osobną playlistę dla utworów, które nie mają określonego roku wydania (tzw. "Nieznana dekada").
+- Fetches data from a Spotify playlist, including track information.
+- Attempts to retrieve the release year for each track based on the album.
+- Groups tracks by decades (e.g., 1960s, 1970s, etc.).
+- Creates new playlists for each decade, assigning tracks to the appropriate playlists.
+- Creates a separate playlist for tracks without a specified release year (called "Unknown Decade").
 
-## Wymagania
+## Requirements
 
-Aby uruchomić aplikację, musisz spełnić kilka wymagań:
+To run the application, you need to meet a few requirements:
 
-1. Sklonuj to repozytorium:
+1. Clone this repository:
 ```bash
 git clone https://github.com/Greyg12/SpotiApi.git
 cd SpotiApi
 ```
-2. Zaintaluj Python w wersji 3.6 lub wyższej (jeśli jeszcze go nie masz).
-3. Zaintaluj biblioteki:
+2. Install Python version 3.6 or higher (if you don't already have it).
+3. Install the required libraries:
     - `spotipy`
     - `pandas`
     - `numpy`
     - `python-dotenv`
     
-   Możesz je zainstalować za pomocą poniższego polecenia:
+   You can install them using the following command:
 
    ```bash
    pip install spotipy pandas numpy python-dotenv
    ```
-4. 🔧 Zarejestruj aplikację na https://developer.spotify.com/dashboard
-   Kliknij "Create an App"
+4. 🔧 Register an application at https://developer.spotify.com/dashboard
+   Click "Create an App"
 
-   Ustaw:
+   Set:
 
-   Nazwa (dowolna)
+   Name (any name)
 
-   Opis (np. “Dekadowy analizator playlisty”)
+   Description (e.g., “Decade Playlist Analyzer”)
 
-   Dodaj redirect_uri, np.:
+   Add a redirect URI, e.g.:
 
    http://localhost:8888/callback
-   (To musi być dokładnie taki sam URI jak w .env i kodzie.)
+   (This must match exactly with the URI in the `.env` file and the code.)
 
-5. Utwórz plik `.env` w katalogu głównym projektu i uzupełnij go danymi ze Spotify:
+5. Create a `.env` file in the project's root directory and fill it with your Spotify credentials:
 
-   Aby aplikacja mogła połączyć się z API Spotify, musisz utworzyć plik `.env` w katalogu głównym aplikacji.  
-   Plik powinien zawierać następujące zmienne:
+   To allow the application to connect to the Spotify API, you need to create a `.env` file in the application's root directory.  
+   The file should contain the following variables:
 
    ```env
-   SPOTIPY_CLIENT_ID=twoje_client_id
-   SPOTIPY_CLIENT_SECRET=twoje_client_secret
-   SPOTIPY_REDIRECT_URI=twoje_redirect_uri
+   SPOTIPY_CLIENT_ID=your_client_id
+   SPOTIPY_CLIENT_SECRET=your_client_secret
+   SPOTIPY_REDIRECT_URI=your_redirect_uri
    ```
 
 
-## Uruchomienie
+## Running the Application
 
-1. **Zaktualizuj ID playlisty** w pliku `.py`:
+1. **Update the Playlist ID** in the `.py` file:
    
-   Otwórz skrypt i znajdź linię:
+   Open the script and find the line:
 
    ```python
    playlist_id = '4fsu0ZRfn3EJ4ezICrYAcV'
    ```
 
-   Zaznaczoną część linku, należy użyć w zmiennej playlist_id
+   Use the highlighted part of the link in the `playlist_id` variable.
    ![Link](images/link.png)
  
-2. **Uruchom skrypt**
+2. **Run the Script**
    
    main.py
-3. **Zaloguj się do Spotify:**
+3. **Log in to Spotify:**
 
-   Przy pierwszym uruchomieniu przeglądarka otworzy się z prośbą o zalogowanie i autoryzację aplikacji.
-4. **Poczekaj na zakończenie:**
+   On the first run, a browser window will open asking you to log in and authorize the application.
+4. **Wait for Completion:**
 
-   Przy większych playlistach, wykonanie skryptu może potrwać kilka minut.
+   For larger playlists, the script may take a few minutes to complete.
 
-   Skrypt pobierze dane, pogrupuje je według dekad i utworzy nowe playlisty w Twoim profilu Spotify. Każda z nich będzie mieć nazwę w formacie:
+   The script will fetch data, group it by decades, and create new playlists in your Spotify profile. Each playlist will have a name in the format:
 
-   Nazwa oryginalnej playlisty - 1990s
-   Nazwa oryginalnej playlisty - 2000s
-   itd.
-   Na końcu zobaczysz komunikat:
+   Original Playlist Name - 1990s  
+   Original Playlist Name - 2000s  
+   etc.  
 
-   🎉 Proces zakończony pomyślnie!
+   At the end, you will see the message:
+
+   🎉 Process completed successfully!
 
    ![Success](images/ua.png)
 
 
-## Działanie aplikacji:
+## Application Workflow:
 
-   Pobieranie playlisty – Aplikacja pobiera playlistę na podstawie podanego playlist_id.
+   Fetching the playlist – The application fetches the playlist based on the provided `playlist_id`.
 
-   Grupowanie utworów – Utwory w playliście są grupowane według dekad. Jeśli rok utworu nie jest dostępny, zostanie przypisany do grupy "Nieznana dekada".
+   Grouping tracks – Tracks in the playlist are grouped by decades. If a track's year is unavailable, it will be assigned to the "Unknown Decade" group.
 
-   Tworzenie playlist – Na podstawie grup dekad tworzone są nowe playlisty, które zawierają odpowiednie utwory.
+   Creating playlists – Based on the decade groups, new playlists are created containing the appropriate tracks.
 
-## Przykład
+## Example
 
-   Jeśli masz playlistę, która zawiera utwory z różnych lat, aplikacja automatycznie pogrupuje je w następujący sposób:
+   If you have a playlist containing tracks from various years, the application will automatically group them as follows:
 
-   ua - 1960s
+   ua - 1960s  
 
-   ua - 1970s
+   ua - 1970s  
 
-   ua - 1980s
+   ua - 1980s  
 
-   itd.
+   etc.  
 
-   ua - Nieznana dekada (dla utworów bez roku wydania)
+   ua - Unknown Decade (for tracks without a release year)
 
-   Każda z tych playlist będzie zawierała odpowiednie utwory, pogrupowane według dekad.
+   Each of these playlists will contain the appropriate tracks grouped by decades.
 
 ![Result](images/result.png)
